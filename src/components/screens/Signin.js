@@ -47,10 +47,10 @@ useEffect(()=>{
     <div className='w-full h-[100vh] flex justify-center items-center'>
         <div className='flex flex-col items-center gap-4 w-[80%] sm:w-[400px] '>
             <h2 className='text-4xl font-medium'>Instagram</h2>
-            <input className='border-2 border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md' type="text" placeholder='Email' value={email} onChange={(e)=>setEmail(e.target.value)} />
+            <input className='border-2 border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md' type="text" placeholder='Email' value={email} onChange={(e)=>setEmail(e.target.value)} default={"test@gmail.com"} />
 
             <div className='relative w-full'>
-            <input className='border-2 border-gray-300 py-2 pr-12 px-4 outline-none w-full focus:border-blue-500 rounded-md' type={showPassword ? `text` : 'password'} placeholder='Password' value={password} onChange={(e)=>setPassword(e.target.value)} />
+            <input className='border-2 border-gray-300 py-2 pr-12 px-4 outline-none w-full focus:border-blue-500 rounded-md' type={showPassword ? `text` : 'password'} placeholder='Password' value={password} onChange={(e)=>setPassword(e.target.value)} default="test" />
 
             {showPassword ? <BiSolidHide className="absolute right-5 top-1/2 -translate-y-1/2 text-2xl cursor-pointer opacity-60 " title='Hide Password' onClick={()=>setShowPassword(prev=>!prev)}/> : <BiSolidShow className="absolute right-5 top-1/2 -translate-y-1/2 text-2xl cursor-pointer opacity-60 " title='Show Password' onClick={()=>setShowPassword(prev=>!prev)}/>}
             </div>
