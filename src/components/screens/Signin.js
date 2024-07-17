@@ -8,6 +8,7 @@ const Signin = () => {
     const [email,setEmail] = useState('test@gmail.com');
   const [password,setPassword] = useState('test');
   const [showPassword,setShowPassword] = useState(false);
+  const [disabled,setDisabled] = useState(false);
   const {state,dispatch} = useContext(userContext)
   const ref = useRef(null);
 const navigate = useNavigate();
@@ -21,7 +22,10 @@ useEffect(()=>{
             toast.error("Invalid email")
           return
         }
-        ref.current.disable = true;
+        if (ref.current) {
+          ref.current.disabled = true;
+          setDisabled(true);
+        }
         fetch(summaryApi.signin.url,{
           method:summaryApi.signin.method,
           headers:{
@@ -34,6 +38,8 @@ useEffect(()=>{
         }).then(res => res.json())
         .then(data => {
             if(data.err){
+              setDisabled(false);
+          ref.current.disabled = false;
               toast.error(data.err)
             }else{
               localStorage.setItem("jwt",data.token);
@@ -42,7 +48,11 @@ useEffect(()=>{
               toast.success("Login Successfully")
               navigate('/')
             }
-        }).catch(err => toast.error(err))
+        }).catch(err => {
+          setDisabled(false);
+          ref.current.disabled = false;
+          toast.error(err)
+        })
       }
 
   return (
@@ -57,7 +67,7 @@ useEffect(()=>{
             {showPassword ? <BiSolidHide className="absolute right-5 top-1/2 -translate-y-1/2 text-2xl cursor-pointer opacity-60 " title='Hide Password' onClick={()=>setShowPassword(prev=>!prev)}/> : <BiSolidShow className="absolute right-5 top-1/2 -translate-y-1/2 text-2xl cursor-pointer opacity-60 " title='Show Password' onClick={()=>setShowPassword(prev=>!prev)}/>}
             </div>
             
-            <button className='w-full bg-blue-400 py-2 text-md font-medium rounded-sm hover:bg-blue-500 duration-300 tracking-wide' onClick={() => postData()} ref={ref}>Login</button>
+            <button style={disabled ? {cursor : 'not-allowed'} : {cursor:"pointer"}} className='w-full bg-blue-400 py-2 text-md font-medium rounded-sm hover:bg-blue-500 duration-300 tracking-wide' onClick={() => postData()} ref={ref}>Login</button>
             <Link to={'/forgot-password'} className='text-red-500'>Forgotten Password?</Link>
             <h5>Don't have an Account? <Link to={'/signup'} className='text-blue-500 hover:underline' >Sign up</Link></h5>
         </div>
